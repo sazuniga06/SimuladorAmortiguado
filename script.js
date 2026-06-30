@@ -611,12 +611,10 @@ presetBtns.forEach(btn => {
 
 btnReplay.addEventListener('click', startAnimation);
 
+let lastWindowWidth = window.innerWidth;
 window.addEventListener('resize', () => {
-    if (window.innerWidth <= 992) {
-        // Debounce or ignore resize on mobile if width didn't change
-        if (window.lastWidth === window.innerWidth) return;
-        window.lastWidth = window.innerWidth;
-    }
+    if (lastWindowWidth === window.innerWidth) return;
+    lastWindowWidth = window.innerWidth;
     startAnimation();
 });
 
