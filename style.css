@@ -459,8 +459,37 @@ input[type=range]::-webkit-slider-thumb:hover {
     margin-bottom: 1rem;
 }
 @media (max-width: 1100px) {
+    body {
+        height: auto;
+        overflow: auto;
+    }
+    .app-container {
+        height: auto;
+        display: flex;
+    }
+    .main-content {
+        display: flex;
+        flex-direction: column;
+    }
+    .sidebar {
+        overflow-y: visible;
+        padding-right: 0;
+    }
     .middle-grid {
         grid-template-columns: 1fr;
+        flex: none;
+    }
+    .chart-container {
+        flex: none;
+        height: 300px;
+    }
+    .s-plane-container {
+        flex: none;
+        height: 250px;
+    }
+    .animation-panel {
+        flex: none;
+        height: 160px;
     }
 }
 
