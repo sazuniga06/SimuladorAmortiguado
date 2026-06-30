@@ -625,10 +625,15 @@ window.addEventListener('resize', () => {
 
 // Canvas Interactions
 if (simCanvas) {
-    simCanvas.addEventListener('mousedown', (e) => {
+    const handlePointerDown = (e) => {
         if (compareMode) return;
+        
+        // Prevent default scrolling on touch devices
+        if (e.type === 'touchstart') e.preventDefault();
+        
         const rect = simCanvas.getBoundingClientRect();
-        const mouseX = e.clientX - rect.left;
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const mouseX = clientX - rect.left;
         
         const w = simCanvas.width;
         const basePos = w / 2 - 40;
@@ -660,12 +665,17 @@ if (simCanvas) {
             inputType.value = 'impulse';
             render();
         }
-    });
+    };
 
-    simCanvas.addEventListener('mousemove', (e) => {
+    const handlePointerMove = (e) => {
         if (!isDragging) return;
+        
+        if (e.type === 'touchmove') e.preventDefault();
+        
         const rect = simCanvas.getBoundingClientRect();
-        const mouseX = e.clientX - rect.left;
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const mouseX = clientX - rect.left;
+        
         const w = simCanvas.width;
         const basePos = w / 2 - 40;
         const scale = 80;
@@ -676,7 +686,7 @@ if (simCanvas) {
         if (dragX > 2.5) dragX = 2.5;
         
         drawSimFrame(dragX, parseFloat(zetaInput.value), false);
-    });
+    };
 
     const stopDrag = () => {
         if (isDragging) {
@@ -694,8 +704,17 @@ if (simCanvas) {
         }
     };
 
+    // Mouse events
+    simCanvas.addEventListener('mousedown', handlePointerDown);
+    simCanvas.addEventListener('mousemove', handlePointerMove);
     simCanvas.addEventListener('mouseup', stopDrag);
     simCanvas.addEventListener('mouseleave', stopDrag);
+    
+    // Touch events
+    simCanvas.addEventListener('touchstart', handlePointerDown, {passive: false});
+    simCanvas.addEventListener('touchmove', handlePointerMove, {passive: false});
+    simCanvas.addEventListener('touchend', stopDrag);
+    simCanvas.addEventListener('touchcancel', stopDrag);
 }
 
 // Initial Render
