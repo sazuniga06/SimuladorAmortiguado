@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Sistemas Amortiguados</title>
+    <!-- Modern Font: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div>
+                <h1 class="title">Sistemas Amortiguados de 2do Orden</h1>
+                <p class="subtitle" id="main-subtitle">Respuesta al escalón unitario</p>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- Sidebar with controls -->
+            <aside class="sidebar">
+                <div class="panel">
+                    <h2 class="panel-title">Parámetros</h2>
+                    
+                    <div class="control-group">
+                        <div class="control-header">
+                            <label for="input-type">Tipo de Entrada</label>
+                        </div>
+                        <select id="input-type" class="custom-select">
+                            <option value="step">Escalón Unitario</option>
+                            <option value="impulse">Impulso (Dirac)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-header">
+                            <label for="zeta">Factor de amortiguamiento ζ</label>
+                            <span class="control-value" id="zeta-val">0.50</span>
+                        </div>
+                        <input type="range" id="zeta" min="0.01" max="3" step="0.01" value="0.5">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-header">
+                            <label for="wn">Frecuencia natural ωₙ (rad/s)</label>
+                            <span class="control-value" id="wn-val">1.0</span>
+                        </div>
+                        <input type="range" id="wn" min="0.5" max="10" step="0.1" value="1">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-header">
+                            <label for="tmax">Tiempo de simulación (s)</label>
+                            <span class="control-value" id="tmax-val">30</span>
+                        </div>
+                        <input type="range" id="tmax" min="5" max="60" step="1" value="30">
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <h2 class="panel-title">Casos de Estudio</h2>
+                    <div class="presets">
+                        <button class="preset-btn btn-sub" data-type="sub">
+                            Subamortiguado <span class="math">ζ < 1</span>
+                        </button>
+                        <button class="preset-btn btn-crit" data-type="crit">
+                            Críticamente Amortiguado <span class="math">ζ = 1</span>
+                        </button>
+                        <button class="preset-btn btn-sob" data-type="sob">
+                            Sobreamortiguado <span class="math">ζ > 1</span>
+                        </button>
+                        <button class="preset-btn btn-compare" data-type="compare">
+                            Comparar los Tres
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main area with chart and info -->
+            <section class="dashboard">
+                <div class="metrics-container">
+                    <div class="metric-card" id="card-type">
+                        <span class="metric-title">Tipo de Sistema</span>
+                        <strong class="metric-value" id="type-label">Subamortiguado</strong>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-title">Tiempo de Asentamiento</span>
+                        <div class="metric-value-wrapper">
+                            <strong class="metric-value" id="ts-val">—</strong>
+                            <span class="metric-unit">s (2%)</span>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-title">Sobreimpulso Máximo</span>
+                        <div class="metric-value-wrapper">
+                            <strong class="metric-value" id="os-val">—</strong>
+                            <span class="metric-unit">%</span>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-title">Frec. Amortiguada (ωd)</span>
+                        <div class="metric-value-wrapper">
+                            <strong class="metric-value" id="wd-val">—</strong>
+                            <span class="metric-unit">rad/s</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="middle-grid">
+                    <div class="chart-panel" style="margin-bottom: 0;">
+                        <div class="chart-header">
+                            <h3 class="chart-title">Respuesta en el Tiempo</h3>
+                            <button id="btn-export" class="btn-action" title="Descargar gráfica">
+                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                    <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                                </svg>
+                                Exportar
+                            </button>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="chart" role="img" aria-label="Gráfica de respuesta al escalón"></canvas>
+                        </div>
+                        <div class="legend" id="legend"></div>
+                    </div>
+    
+                    <div class="animation-panel panel" style="margin-bottom: 0;">
+                        <div class="chart-header">
+                            <h2 class="panel-title" style="margin-bottom: 0;">Simulación</h2>
+                            <button id="btn-replay" class="btn-action" title="Reiniciar animación">
+                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                                    <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                                </svg>
+                                Reiniciar
+                            </button>
+                        </div>
+                        <div class="animation-container" id="sim-container" style="position: relative; width: 100%; height: 260px; margin-top: 1rem; cursor: grab;">
+                            <canvas id="sim-canvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottom-grid">
+                    <div class="equation-box panel">
+                        <h2 class="panel-title">Modelado Matemático</h2>
+                        <div class="eq-row">
+                            <span class="eq-label">Ecuación Diferencial:</span>
+                            <span class="eq-math">ẍ + 2ζωₙẋ + ωₙ²x = ωₙ²u(t)</span>
+                        </div>
+                        <div class="eq-row">
+                            <span class="eq-label">Función de Transferencia:</span>
+                            <span class="eq-math">G(s) = ωₙ² / (s² + 2ζωₙs + ωₙ²)</span>
+                        </div>
+                        <div class="eq-params" id="eq-params">
+                            <!-- Filled by JS -->
+                        </div>
+                    </div>
+                    
+                    <div class="s-plane-panel panel">
+                        <h2 class="panel-title">Plano S (Polos)</h2>
+                        <div class="s-plane-container" style="position: relative; width: 100%; height: 200px;">
+                            <canvas id="s-plane-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
