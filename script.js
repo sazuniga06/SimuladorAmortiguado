@@ -530,9 +530,13 @@ function renderSimulationLoop(timestamp) {
     if (isDragging) {
         y = dragX;
     } else if (freeResponseX0 !== null) {
-        // Free response: x0 * (1 - step_response)
+        // Free response with initial condition x0
         const stepY = stepResponse(zeta, wn, [simTime])[0];
-        y = freeResponseX0 * (1 - stepY);
+        if (isStep) {
+            y = 1 + (freeResponseX0 - 1) * (1 - stepY); // Settles at 1
+        } else {
+            y = freeResponseX0 * (1 - stepY); // Settles at 0
+        }
     } else if (isStep) {
         y = stepResponse(zeta, wn, [simTime])[0];
     } else {
@@ -542,7 +546,7 @@ function renderSimulationLoop(timestamp) {
     drawSimFrame(y, zeta, isStep && freeResponseX0 === null);
     
     // Live update the chart
-    if (chart && chart.data.datasets[0] && !compareMode && freeResponseX0 === null) {
+    if (chart && chart.data.datasets[0] && !compareMode) {
         chart.data.datasets[0].data.push({ x: simTime, y: y });
         chart.update('none');
     }
@@ -552,13 +556,14 @@ function renderSimulationLoop(timestamp) {
     } else if (!isDragging) {
         let finalY = 0;
         if (freeResponseX0 !== null) {
-            finalY = freeResponseX0 * (1 - stepResponse(zeta, wn, [tmax])[0]);
+            const stepY = stepResponse(zeta, wn, [tmax])[0];
+            finalY = isStep ? 1 + (freeResponseX0 - 1) * (1 - stepY) : freeResponseX0 * (1 - stepY);
         } else {
             finalY = isStep ? stepResponse(zeta, wn, [tmax])[0] : impulseResponse(zeta, wn, [tmax])[0];
         }
         drawSimFrame(finalY, zeta, isStep && freeResponseX0 === null);
         
-        if (chart && chart.data.datasets[0] && !compareMode && freeResponseX0 === null) {
+        if (chart && chart.data.datasets[0] && !compareMode) {
             chart.data.datasets[0].data.push({ x: tmax, y: finalY });
             chart.update('none');
         }
@@ -631,9 +636,11 @@ if (simCanvas) {
         
         // Estimate current Y
         let y = 0;
+        const isStep = inputType.value === 'step';
         if (freeResponseX0 !== null) {
-            y = freeResponseX0 * (1 - stepResponse(parseFloat(zetaInput.value), parseFloat(wnInput.value), [((Date.now() - (animStartTime||Date.now())) / 1000) * (parseInt(tmaxInput.value) / 5)])[0]);
-        } else if (inputType.value === 'step') {
+            const stepY = stepResponse(parseFloat(zetaInput.value), parseFloat(wnInput.value), [((Date.now() - (animStartTime||Date.now())) / 1000) * (parseInt(tmaxInput.value) / 5)])[0];
+            y = isStep ? 1 + (freeResponseX0 - 1) * (1 - stepY) : freeResponseX0 * (1 - stepY);
+        } else if (isStep) {
             y = stepResponse(parseFloat(zetaInput.value), parseFloat(wnInput.value), [((Date.now() - (animStartTime||Date.now())) / 1000) * (parseInt(tmaxInput.value) / 5)])[0];
         } else {
             y = impulseResponse(parseFloat(zetaInput.value), parseFloat(wnInput.value), [((Date.now() - (animStartTime||Date.now())) / 1000) * (parseInt(tmaxInput.value) / 5)])[0];
@@ -676,6 +683,13 @@ if (simCanvas) {
             isDragging = false;
             freeResponseX0 = dragX;
             animStartTime = 0;
+            
+            // Clear chart for new drawing
+            if (chart && chart.data.datasets[0] && !compareMode) {
+                chart.data.datasets[0].data = [];
+                chart.update('none');
+            }
+            
             animationId = requestAnimationFrame(renderSimulationLoop);
         }
     };
