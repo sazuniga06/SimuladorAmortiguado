@@ -41,8 +41,7 @@ body {
     font-family: var(--font-main);
     background-color: var(--bg-base);
     color: var(--text-primary);
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
     margin: 0;
     background-image: 
         radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 25%),
@@ -52,11 +51,9 @@ body {
 
 .app-container {
     max-width: 1400px;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0 auto;
-    padding: 0.5rem 1rem;
-    display: flex;
-    flex-direction: column;
+    padding: 1rem 2rem;
 }
 
 /* Typography & Header */
@@ -84,8 +81,6 @@ body {
 
 /* Layout */
 .main-content {
-    flex: 1;
-    min-height: 0;
     display: grid;
     grid-template-columns: 320px 1fr;
     gap: 1.5rem;
@@ -95,14 +90,12 @@ body {
 }
 
 .sidebar {
-    overflow-y: auto;
-    padding-right: 0.5rem;
+    padding-right: 0;
 }
 
 .dashboard {
     display: flex;
     flex-direction: column;
-    min-height: 0;
 }
 
 @media (max-width: 992px) {
@@ -314,8 +307,7 @@ input[type=range]::-webkit-slider-thumb:hover {
 .chart-container {
     position: relative;
     width: 100%;
-    flex: 1;
-    min-height: 0;
+    height: 320px;
 }
 
 .legend {
@@ -447,57 +439,25 @@ input[type=range]::-webkit-slider-thumb:hover {
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 320px;
 }
 
 /* Middle Grid */
 .middle-grid {
-    flex: 1;
-    min-height: 0;
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 1.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 }
 @media (max-width: 1100px) {
-    body {
-        height: auto;
-        overflow: auto;
-    }
-    .app-container {
-        height: auto;
-        display: flex;
-    }
-    .main-content {
-        display: flex;
-        flex-direction: column;
-    }
-    .sidebar {
-        overflow-y: visible;
-        padding-right: 0;
-    }
     .middle-grid {
         grid-template-columns: 1fr;
-        flex: none;
-    }
-    .chart-container {
-        flex: none;
-        height: 300px;
-    }
-    .s-plane-container {
-        flex: none;
-        height: 250px;
-    }
-    .animation-panel {
-        flex: none;
-        height: 160px;
     }
 }
 
 /* Simulation Animation Panel */
 .animation-panel {
-    margin-bottom: 1rem;
-    flex: 0.6;
-    min-height: 120px;
+    margin-bottom: 1.5rem;
 }
 .animation-container {
     background: var(--bg-base);
@@ -505,5 +465,6 @@ input[type=range]::-webkit-slider-thumb:hover {
     box-shadow: inset 0 0 20px rgba(0,0,0,0.4);
     border: 1px solid rgba(255, 255, 255, 0.03);
     overflow: hidden;
+    height: 140px;
 }
 
