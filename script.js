@@ -136,14 +136,9 @@ function buildChart(datasets, labels) {
                 legend: { display: false },
                 customCanvasBackgroundColor: { color: '#151A22' },
                 tooltip: {
-                    mode: 'index',
-                    intersect: false,
-                    backgroundColor: 'rgba(15, 23, 42, 0.9)',
-                    titleColor: '#F3F4F6',
-                    bodyColor: '#D1D5DB',
-                    borderColor: 'rgba(255,255,255,0.1)',
-                    borderWidth: 1,
-                    padding: 12,
+                    enabled: false
+                }
+            },
                     callbacks: {
                         label: ctx => `${ctx.dataset.label || 'Valor'}: ${parseFloat(ctx.raw).toFixed(3)}`
                     }
@@ -620,6 +615,11 @@ presetBtns.forEach(btn => {
 btnReplay.addEventListener('click', startAnimation);
 
 window.addEventListener('resize', () => {
+    if (window.innerWidth <= 992) {
+        // Debounce or ignore resize on mobile if width didn't change
+        if (window.lastWidth === window.innerWidth) return;
+        window.lastWidth = window.innerWidth;
+    }
     startAnimation();
 });
 
@@ -660,10 +660,6 @@ if (simCanvas) {
             dragX = y;
             if (animationId) cancelAnimationFrame(animationId);
             drawSimFrame(dragX, parseFloat(zetaInput.value), false);
-        } else {
-            // Apply impulse
-            inputType.value = 'impulse';
-            render();
         }
     };
 

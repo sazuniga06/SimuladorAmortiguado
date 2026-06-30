@@ -51,18 +51,18 @@ body {
 .app-container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 1rem 2rem;
 }
 
 /* Typography & Header */
 .header {
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
     border-bottom: 1px solid var(--border-color);
 }
 
 .title {
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: 600;
     letter-spacing: -0.02em;
     background: linear-gradient(90deg, #fff, #9CA3AF);
@@ -107,8 +107,8 @@ body {
     backdrop-filter: blur(12px);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
     box-shadow: var(--shadow-subtle);
 }
 
@@ -116,7 +116,7 @@ body {
     font-size: 1.1rem;
     font-weight: 500;
     color: var(--text-primary);
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -237,9 +237,9 @@ input[type=range]::-webkit-slider-thumb:hover {
 /* Metrics Dashboard */
 .metrics-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 1rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .metric-card {
@@ -287,9 +287,9 @@ input[type=range]::-webkit-slider-thumb:hover {
     background: var(--bg-surface);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
-    padding: 1.5rem;
+    padding: 1rem 1.5rem;
     box-shadow: inset 0 0 40px rgba(0,0,0,0.2);
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .chart-container {
@@ -445,7 +445,7 @@ input[type=range]::-webkit-slider-thumb:hover {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 1.5rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 }
 @media (max-width: 1100px) {
     .middle-grid {
@@ -455,7 +455,7 @@ input[type=range]::-webkit-slider-thumb:hover {
 
 /* Simulation Animation Panel */
 .animation-panel {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 }
 .animation-container {
     background: var(--bg-base);
