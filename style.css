@@ -41,7 +41,9 @@ body {
     font-family: var(--font-main);
     background-color: var(--bg-base);
     color: var(--text-primary);
-    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
     background-image: 
         radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 25%),
         radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.08) 0%, transparent 25%);
@@ -50,8 +52,11 @@ body {
 
 .app-container {
     max-width: 1400px;
+    height: 100vh;
     margin: 0 auto;
-    padding: 1rem 2rem;
+    padding: 0.5rem 1rem;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Typography & Header */
@@ -78,27 +83,41 @@ body {
 }
 
 /* Layout */
-.main-grid {
+.main-content {
+    flex: 1;
+    min-height: 0;
     display: grid;
     grid-template-columns: 320px 1fr;
     gap: 1.5rem;
     max-width: 1400px;
     margin: 0 auto;
+    width: 100%;
+}
+
+.sidebar {
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
 }
 
 @media (max-width: 992px) {
-    .main-grid {
+    .main-content {
         grid-template-columns: 1fr;
     }
 }
 
 .app-footer {
-    margin-top: 3rem;
-    padding-top: 1.5rem;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
     border-top: 1px solid var(--border-color);
     text-align: center;
     color: var(--text-muted);
-    font-size: 0.85rem;
+    font-size: 0.75rem;
 }
 
 /* Panels */
@@ -295,7 +314,8 @@ input[type=range]::-webkit-slider-thumb:hover {
 .chart-container {
     position: relative;
     width: 100%;
-    height: 260px;
+    flex: 1;
+    min-height: 0;
 }
 
 .legend {
@@ -417,16 +437,6 @@ input[type=range]::-webkit-slider-thumb:hover {
     border-color: var(--text-secondary);
 }
 
-.bottom-grid {
-    display: grid;
-    grid-template-columns: 2fr 1.2fr;
-    gap: 1.5rem;
-}
-@media (max-width: 992px) {
-    .bottom-grid {
-        grid-template-columns: 1fr;
-    }
-}
 .s-plane-panel {
     margin-bottom: 0;
     display: flex;
@@ -437,11 +447,12 @@ input[type=range]::-webkit-slider-thumb:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 160px;
 }
 
 /* Middle Grid */
 .middle-grid {
+    flex: 1;
+    min-height: 0;
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 1.5rem;
@@ -456,6 +467,8 @@ input[type=range]::-webkit-slider-thumb:hover {
 /* Simulation Animation Panel */
 .animation-panel {
     margin-bottom: 1rem;
+    flex: 0.6;
+    min-height: 120px;
 }
 .animation-container {
     background: var(--bg-base);

@@ -139,11 +139,6 @@ function buildChart(datasets, labels) {
                     enabled: false
                 }
             },
-                    callbacks: {
-                        label: ctx => `${ctx.dataset.label || 'Valor'}: ${parseFloat(ctx.raw).toFixed(3)}`
-                    }
-                }
-            },
             scales: {
                 x: {
                     type: 'linear',
@@ -457,12 +452,15 @@ function drawSimFrame(y, zeta, isStep) {
     
     // Damper
     const damperY = massY + (3 * massH) / 4;
-    const cylW = Math.max(40, basePos - wallX - 30); // fixed cylinder width
     
-    // Cylinder
+    // Cylinder is fixed to the wall, fixed length
+    const cylW = 60; 
+    
+    // Draw Cylinder (gray)
     simCtx.beginPath();
     simCtx.moveTo(wallX, damperY);
     simCtx.lineTo(wallX + cylW, damperY);
+    // Cylinder opening ("C" shape)
     simCtx.moveTo(wallX + cylW, damperY - 8);
     simCtx.lineTo(wallX + cylW, damperY + 8);
     simCtx.moveTo(wallX + cylW, damperY - 8);
@@ -473,12 +471,11 @@ function drawSimFrame(y, zeta, isStep) {
     simCtx.lineWidth = 3;
     simCtx.stroke();
     
-    // Piston
+    // Piston rod (white). Attached to mass, ends inside the cylinder
     simCtx.beginPath();
     simCtx.moveTo(currentX, damperY);
-    simCtx.lineTo(wallX + cylW - 5, damperY);
-    simCtx.moveTo(wallX + cylW - 5, damperY - 6);
-    simCtx.lineTo(wallX + cylW - 5, damperY + 6);
+    // The rod ends 20px inside the cylinder
+    simCtx.lineTo(wallX + cylW - 20, damperY);
     simCtx.strokeStyle = '#F3F4F6';
     simCtx.lineWidth = 3;
     simCtx.stroke();

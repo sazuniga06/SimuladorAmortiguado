@@ -77,6 +77,21 @@
                         </button>
                     </div>
                 </div>
+
+                <div class="equation-box panel" style="margin-bottom: 0;">
+                    <h2 class="panel-title">Modelado Matemático</h2>
+                    <div class="eq-row">
+                        <span class="eq-label">Ec. Diferencial:</span>
+                        <span class="eq-math">ẍ+2ζωₙẋ+ωₙ²x = ωₙ²u(t)</span>
+                    </div>
+                    <div class="eq-row">
+                        <span class="eq-label">F. Transferencia:</span>
+                        <span class="eq-math">G(s) = ωₙ² / (s²+2ζωₙs+ωₙ²)</span>
+                    </div>
+                    <div class="eq-params" id="eq-params" style="font-size: 0.8rem; padding: 0.5rem;">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
             </aside>
 
             <!-- Main area with chart and info -->
@@ -127,44 +142,27 @@
                         <div class="legend" id="legend"></div>
                     </div>
     
-                    <div class="animation-panel panel" style="margin-bottom: 0;">
-                        <div class="chart-header">
-                            <h2 class="panel-title" style="margin-bottom: 0;">Simulación</h2>
-                            <button id="btn-replay" class="btn-action" title="Reiniciar animación">
-                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
-                                    <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
-                                </svg>
-                                Reiniciar
-                            </button>
-                        </div>
-                        <div class="animation-container" id="sim-container" style="position: relative; width: 100%; height: 260px; margin-top: 1rem; cursor: grab;">
-                            <canvas id="sim-canvas"></canvas>
+                    <div class="s-plane-panel panel" style="margin-bottom: 0;">
+                        <h2 class="panel-title">Plano S (Polos)</h2>
+                        <div class="s-plane-container" style="position: relative; width: 100%;">
+                            <canvas id="s-plane-chart"></canvas>
                         </div>
                     </div>
                 </div>
 
-                <div class="bottom-grid">
-                    <div class="equation-box panel">
-                        <h2 class="panel-title">Modelado Matemático</h2>
-                        <div class="eq-row">
-                            <span class="eq-label">Ecuación Diferencial:</span>
-                            <span class="eq-math">ẍ + 2ζωₙẋ + ωₙ²x = ωₙ²u(t)</span>
-                        </div>
-                        <div class="eq-row">
-                            <span class="eq-label">Función de Transferencia:</span>
-                            <span class="eq-math">G(s) = ωₙ² / (s² + 2ζωₙs + ωₙ²)</span>
-                        </div>
-                        <div class="eq-params" id="eq-params">
-                            <!-- Filled by JS -->
-                        </div>
+                <div class="animation-panel panel" style="margin-bottom: 0; display: flex; flex-direction: column;">
+                    <div class="chart-header" style="margin-bottom: 0.5rem;">
+                        <h2 class="panel-title" style="margin-bottom: 0;">Simulación Física Interactiva</h2>
+                        <button id="btn-replay" class="btn-action" title="Reiniciar animación">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                            </svg>
+                            Reiniciar
+                        </button>
                     </div>
-                    
-                    <div class="s-plane-panel panel">
-                        <h2 class="panel-title">Plano S (Polos)</h2>
-                        <div class="s-plane-container" style="position: relative; width: 100%; height: 200px;">
-                            <canvas id="s-plane-chart"></canvas>
-                        </div>
+                    <div class="animation-container" id="sim-container" style="position: relative; width: 100%; flex: 1; min-height: 80px; cursor: grab;">
+                        <canvas id="sim-canvas"></canvas>
                     </div>
                 </div>
             </section>
